@@ -4,7 +4,8 @@
 
 if __name__ == "__main__":
     from argparse import ArgumentParser
-    from pytorch_lightning import Trainer
+    # from pytorch_lightning import Trainer
+    from pytorch_lightning.cli import LightningCLI
     from pytorch_lightning.utilities import rank_zero_info, rank_zero_only
 
     rank_zero_info("########## work in progress ##########")
@@ -114,7 +115,7 @@ if __name__ == "__main__":
     parser.add_argument("--lora_dropout", default=0.01, type=float)
     parser.add_argument("--lora_parts", default="att,ln,time", type=str)
 
-    parser = Trainer.add_argparse_args(parser)
+    LightningCLI.add_arguments_to_parser(parser)
     args = parser.parse_args()
 
     ########################################################################################################
@@ -353,7 +354,7 @@ if __name__ == "__main__":
         model.load_state_dict(torch.load(args.lora_load, map_location="cpu"),
                               strict=False)
 
-    trainer = Trainer.from_argparse_args(
+    trainer = LightningCLI(
         args,
         callbacks=[train_callback(args)],
     )
