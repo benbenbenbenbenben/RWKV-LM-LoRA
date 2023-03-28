@@ -51,6 +51,7 @@ class MyDataModule(LightningDataModule):
         ds_bucket_mb: int = 200,
         num_nodes: int = 1,
         devices: int = 1,
+        precision: str = "fp16",
         my_img_version: str = "",
         my_img_size: int = 0,
         my_img_bit: int = 0,
@@ -111,6 +112,7 @@ class MyDataModule(LightningDataModule):
         self.ds_bucket_mb = ds_bucket_mb
         self.num_nodes = num_nodes
         self.devices = devices
+        self.precision = precision
         self.my_img_version = my_img_version
         self.my_img_size = my_img_size
         self.my_img_bit = my_img_bit
