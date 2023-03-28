@@ -374,4 +374,4 @@ class MyDataModule(LightningDataModule):
 
 if __name__ == "__main__":
     cli = LightningCLI(MyClassifier, MyDataModule, seed_everything_default=42)
-    result = cli.trainer.fit(cli.model, cli.datamodule)
+    #result = cli.trainer.fit(cli.model, cli.datamodule)
