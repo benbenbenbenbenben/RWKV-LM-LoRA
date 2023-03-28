@@ -372,6 +372,6 @@ class MyDataModule(LightningDataModule):
         # must set shuffle=False, persistent_workers=False (because worker is in another thread)
         data_loader = DataLoader(train_data, shuffle=False, pin_memory=True, batch_size=self.micro_bsz, num_workers=1, persistent_workers=False, drop_last=True)
 
-if __name__ == "main":
+if __name__ == "__main__":
     cli = LightningCLI(MyClassifier, MyDataModule, seed_everything_default=42)
     result = cli.trainer.fit(cli.model, cli.datamodule)
