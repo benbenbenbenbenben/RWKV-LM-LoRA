@@ -6,8 +6,7 @@ import pytorch_lightning as pl
 from pytorch_lightning.utilities import rank_zero_info
 import torch
 import warnings, datetime, os, importlib
-
-
+from torch.utils.data import DataLoader
 
 class MyClassifier(LightningModule):
     pass
@@ -248,7 +247,7 @@ class MyDataModule(LightningDataModule):
 ############################################################################
 """
         )
-        rank_zero_info(str(vars(args)) + "\n")
+        rank_zero_info(str(vars(self)) + "\n")
 
         assert self.data_type in ["utf-8", "utf-16le", "numpy", "binidx", "dummy", "wds_img", "uint16"]
 
@@ -288,13 +287,13 @@ class MyDataModule(LightningDataModule):
         from src.trainer import train_callback, generate_init_weight
         from src.dataset import MyDataset
 
-        train_data = MyDataset(args)
+        train_data = MyDataset(self)
         self.vocab_size = train_data.vocab_size
 
         if self.data_type == 'wds_img':
             from src.model_img import RWKV_IMG
             assert self.lora, "LoRA not yet supported for RWKV_IMG"
-            model = RWKV_IMG(args)
+            model = RWKV_IMG(self)
         else:
             from src.model import RWKV, LORA_CONFIG, LoraLinear
             if self.lora:
@@ -305,7 +304,7 @@ class MyDataModule(LightningDataModule):
                 LORA_CONFIG["parts"] = set(str(self.lora_parts).split(','))
                 enable_time_finetune = 'time' in LORA_CONFIG["parts"]
                 enable_ln_finetune = 'ln' in LORA_CONFIG["parts"]
-            model = RWKV(args)
+            model = RWKV(self)
             # only train lora parameters
             if self.lora:
                 model.requires_grad_(False)
@@ -353,8 +352,8 @@ class MyDataModule(LightningDataModule):
                                 strict=False)
 
         # trainer = LightningCLI(
-        #     args,
-        #     callbacks=[train_callback(args)],
+        #     self,
+        #     callbacks=[train_callback(self)],
         # )
 
         if self.global_rank == 0:
@@ -366,9 +365,9 @@ class MyDataModule(LightningDataModule):
                 else:
                     print(f"{str(shape[0]).ljust(5)}       {n}")
 
-        if "deepspeed" in self.strategy:
-            trainer.strategy.config["zero_optimization"]["allgather_bucket_size"] = self.ds_bucket_mb * 1000 * 1000
-            trainer.strategy.config["zero_optimization"]["reduce_bucket_size"] = self.ds_bucket_mb * 1000 * 1000
+        # if "deepspeed" in self.strategy:
+        #     trainer.strategy.config["zero_optimization"]["allgather_bucket_size"] = self.ds_bucket_mb * 1000 * 1000
+        #     trainer.strategy.config["zero_optimization"]["reduce_bucket_size"] = self.ds_bucket_mb * 1000 * 1000
 
         # must set shuffle=False, persistent_workers=False (because worker is in another thread)
         data_loader = DataLoader(train_data, shuffle=False, pin_memory=True, batch_size=self.micro_bsz, num_workers=1, persistent_workers=False, drop_last=True)
