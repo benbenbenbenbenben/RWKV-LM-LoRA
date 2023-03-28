@@ -49,7 +49,7 @@ class MyDataModule(LightningDataModule):
         my_pile_edecay: int = 0,
         layerwise_lr: int = 1,
         ds_bucket_mb: int = 200,
-        my_img_version: str = 0,
+        my_img_version: str = "",
         my_img_size: int = 0,
         my_img_bit: int = 0,
         my_img_clip: str = "x",
