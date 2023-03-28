@@ -366,7 +366,7 @@ class MyDataModule(LightningDataModule):
         #     callbacks=[train_callback(self)],
         # )
 
-        if self.global_rank == 0:
+        if LightningModule.global_rank == 0:
             for n in model.state_dict():
                 shape = model.state_dict()[n].shape
                 shape = [i for i in shape if i != 1]
