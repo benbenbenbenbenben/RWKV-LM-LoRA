@@ -49,6 +49,7 @@ class MyDataModule(LightningDataModule):
         my_pile_edecay: int = 0,
         layerwise_lr: int = 1,
         ds_bucket_mb: int = 200,
+        num_nodes: int = 1,
         my_img_version: str = "",
         my_img_size: int = 0,
         my_img_bit: int = 0,
@@ -107,6 +108,7 @@ class MyDataModule(LightningDataModule):
         self.my_pile_edecay = my_pile_edecay
         self.layerwise_lr = layerwise_lr
         self.ds_bucket_mb = ds_bucket_mb
+        self.num_nodes = num_nodes
         self.my_img_version = my_img_version
         self.my_img_size = my_img_size
         self.my_img_bit = my_img_bit
