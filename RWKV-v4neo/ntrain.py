@@ -113,6 +113,7 @@ class MyDataModule(LightningDataModule):
         self.num_nodes = num_nodes
         self.devices = devices
         self.precision = precision
+        self.accelerator = accelerator
         self.my_img_version = my_img_version
         self.my_img_size = my_img_size
         self.my_img_bit = my_img_bit
