@@ -70,6 +70,7 @@ class MyDataModule(LightningDataModule):
         lora_alpha: float = 32,
         lora_dropout: float = 0.01,
         lora_parts: str = "att,ln,time",
+        strategy: str = None,
     ):
         super().__init__()
         self.load_model = load_model
@@ -127,6 +128,7 @@ class MyDataModule(LightningDataModule):
         self.lora_alpha = lora_alpha
         self.lora_dropout = lora_dropout
         self.lora_parts = lora_parts
+        self.strategy = strategy
 
         if self.strategy is not None and "deepspeed" in self.strategy:
             import deepspeed
