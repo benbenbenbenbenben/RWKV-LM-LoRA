@@ -52,6 +52,7 @@ class MyDataModule(LightningDataModule):
         num_nodes: int = 1,
         devices: int = 1,
         precision: str = "fp16",
+        accelerator: str = "gpu",
         my_img_version: str = "",
         my_img_size: int = 0,
         my_img_bit: int = 0,
