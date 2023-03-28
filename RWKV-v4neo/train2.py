@@ -118,7 +118,8 @@ if __name__ == "__main__":
     parser.add_argument("--lora_parts", default="att,ln,time", type=str)
 
     #parser = Trainer.add_argparse_args(parser)
-    LightningCLI.add_arguments_to_parser(parser)
+    cli = LightningCLI(parser)
+    # LightningCLI.add_arguments_to_parser(parser)
     args = parser.parse_args()
 
     ########################################################################################################
